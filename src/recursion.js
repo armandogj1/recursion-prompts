@@ -7,31 +7,113 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+  // edge cases
+  // if n is less than zero
+    // return null as it is not a factorial
+  if (n < 0) {
+    return null;
+  }
+  // if it is 0 return one
+  if (n === 0) {
+    // makes sure that it doesn't recurse infinitely
+    return 1;
+  }
+  // if it makes it pass the edge cases return current value times the function decrease by one
+
+  return (n * factorial(n - 1));
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+  if (array.length === 0) {
+    return 0;
+  }
+  // check array length is one
+  if (array.length === 1) {
+    // return result
+    return array[0];
+  } else {
+  // otherwise
+    // add the last value to the second to last
+    var result = array.slice(0, array.length - 1);
+    result[result.length - 1] += array[array.length - 1];
+    // return function with modified array
+    return sum(result);
+  }
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+  // if array length is zero
+  if (array.length === 0) {
+    return 0;
+    // return zero
+  }
+
+  if (array.length === 1 && !array.some(value => Array.isArray(value))) {
+    // if length is 1 and index value is not a nested array
+    // return index 0
+    return array[0];
+  }
+
+  // if the array has nested values
+  if (array.some(value => Array.isArray(value))){
+    return arraySum([].concat(...array));
+  }
+    // otherwise
+    // copy the array using concat
+    var result = array.slice();
+    // remove last and add to second last
+    var last = result.pop();
+    result[result.length - 1] += last;
+    // return arraySum with modified array
+    return arraySum(result);
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  // if zero return true
+  if (n === 0) {
+    return true;
+  }
+  // if one return false
+  if (n === 1) {
+    return false;
+  }
+  // call function with n - 2 if negative call it with a double negative
+  return n < 0 ? isEven(-n) : isEven(n - 2)
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  // if n is
+  // if n
+  // 3 --> return ()
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+  if (!Array.isArray(x)) {
+    if (x === y || x + 1 === y || x - 1 === y) return [];
+    // set x to array
+    x = [x];
+  }
+  var temp = x[x.length - 1];
+
+  if (temp === y) {
+    return x.slice(1, x.length - 1);
+  }
+
+  if (temp > y) {
+    return range(x.concat(temp - 1), y);
+  }
+
+  return range(x.concat(temp + 1), y);
 };
 
 // 7. Compute the exponent of a number.
@@ -40,6 +122,24 @@ var range = function(x, y) {
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  // if base is zero
+  if (base === 0) {
+    return 0;
+  }
+  // if exp is 0 return one
+  if (exp === 0) {
+    return 1;
+  }
+
+  // if exp negative divide
+  if (exp < 0) {
+    // get the divisor
+    var divisor = exponent(base, -exp);
+    return 1 / divisor;
+  }
+
+  // otherwise call base times function base and exp--
+  return base * exponent(base, exp - 1);
 };
 
 // 8. Determine if a number is a power of two.
@@ -185,6 +285,20 @@ var nestedEvenSum = function(obj) {
 // 30. Flatten an array containing nested arrays.
 // flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(array) {
+  // if array length is zero
+  if (array.length === 0) {
+    return [];
+  }
+  // if array is flat
+  if (array.every(value => !Array.isArray(value))){
+    return array;
+  }
+  // if array is a nested array
+  //split array and concat them together
+  var first = array.slice(0, Math.floor(array.length / 2));
+  var second = array.slice(Math.floor(array.length / 2));
+  var result = [].concat(...first, ...second);
+  return flatten(result);
 };
 
 // 31. Given a string, return an object containing tallies of each letter.
