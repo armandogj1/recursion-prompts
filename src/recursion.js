@@ -90,9 +90,23 @@ var isEven = function(n) {
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
-  // if n is
-  // if n
-  // 3 --> return ()
+  // if n is 0
+  if (n === 0) {
+    return 0;
+  }
+  // if n is less than zero
+  if (n < -1) {
+    return (n+1) + sumBelow(n+1);
+  }
+  if (n === -1) {
+    return 0;
+  }
+  // if n equal to one
+  if (n === 1) {
+    return 0;
+  }
+  // recurse with
+  return (n-1) + sumBelow(n-1);
 };
 
 // 6. Get the integers within a range (x, y).
@@ -134,8 +148,7 @@ var exponent = function(base, exp) {
   // if exp negative divide
   if (exp < 0) {
     // get the divisor
-    var divisor = exponent(base, -exp);
-    return 1 / divisor;
+    return 1 / exponent(base, - exp);
   }
 
   // otherwise call base times function base and exp--
@@ -147,14 +160,54 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  // if it is one
+  if (n === 1) {
+    return true;
+  }
+  // if n less than one
+  if (n < 1) {
+    return false;
+  }
+  return powerOfTwo(n/2);
 };
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  // if string is empty
+  if (string.length < 1) {
+    return '';
+  }
+  // if string is one char
+  if (string.length === 1) {
+    return string;
+  }
+  // takes a string
+  var last = string.slice(-1);
+  //returns a string the last char in the front
+  return last + reverse(string.slice(0, -1));
 };
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  // if string empty
+  if (string.length === 0) {
+    return 'false';
+  }
+  // if string is one char
+  if (string.length === 1) {
+    return true;
+  }
+  string = string.toLowerCase();
+  string = string.split(" ").join("");
+  var first = string.charAt(0);
+  var last = string.slice(-1);
+  // compares first and last
+  if (first !== last) {
+    // if not equal returns false
+    return false;
+  }
+  // recurse minus first last
+  return palindrome(string.slice(1, -1));
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -162,17 +215,79 @@ var palindrome = function(string) {
 // modulo(5,2) // 1
 // modulo(17,5) // 2
 // modulo(22,6) // 4
+//if the y cannot be substracted evenly
+//if x equal 0
+//return call x decreased by y and y
+// x is negative call it with a negative outside the function
+// if y is negative set it to positive
 var modulo = function(x, y) {
+  if (x < 0) {
+    return -modulo(-x, y);
+  }
+  if (y < 0) {
+    y = -y;
+  }
+  if (x < y) {
+    return x;
+  }
+  if (y === 0) {
+    return Number.NaN;
+  }
+  if (x === y) {
+    return 0;
+  }
+  return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
+// if x or y is zero
+// if y is 1
+// if both are negative
+// if x is negative
+// if y is negative
 var multiply = function(x, y) {
+  if (x === 0 || y === 0) {
+    return 0;
+  }
+  if (y === 1) {
+    return x;
+  }
+  if (x < 0 && y < 0) {
+    return multiply(-x, -y);
+  }
+  if (x < 0) {
+    return -multiply(-x, y);
+  }
+  if (y < 0) {
+    return -multiply(x, -y)
+  }
+  return x + multiply(x, y-1);
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
+// How many times y fit into x
 var divide = function(x, y) {
+  if (y === 0) {
+    return Number.NaN;
+  }
+  if (x === 0) {
+    return 0;
+  }
+  if (y === 1) {
+    return x;
+  }
+  if (y > x) {
+    return 0;
+  }
+  if (x < 0) {
+    return -divide(-x, y);
+  }
+  if (y < 0) {
+    return -divide(x, -y);
+  }
+  return 1 + divide(x - y, y);
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
