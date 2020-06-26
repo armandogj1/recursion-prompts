@@ -296,6 +296,20 @@ var divide = function(x, y) {
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
 var gcd = function(x, y) {
+  // if x is zero
+  if (x === 0) {
+    return 1;
+  }
+  // if y is zero
+  if (y === 0) {
+    return x;
+  };
+  // if negative return null
+  if (x < 0 || y < 0) {
+    return null;
+  }
+  // if theres a remainder
+  return gcd(y, x % y);
 };
 
 // 15. Write a function that compares each character of two strings and returns true if
@@ -303,21 +317,75 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  // if both strings are empty
+  if (str1.length === 0 && str2.length === 0) {
+    return true;
+  }
+  // if first chars don't match
+  if (str1.charAt(0) !== str2.charAt(0)) {
+    return false;
+  }
+  // pass strings minus one
+  return compareStr(str1.slice(1), str2.slice(1));
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+  // if str is a string create array
+  if (typeof str === 'string') {
+    // if string is empty
+    if (str.length === 0) {
+      return [];
+    }
+    // push the first char and the rest of string
+    var stringArr = [].concat(str.charAt(0), str.slice(1));
+    return createArray(stringArr);
+  }
+  // otherwise
+  // pop last index and turn it back to a string
+  var remainingStr = str.pop();
+  // is last char is empty
+  if (remainingStr.length === 0) {
+    // return array
+    return str;
+  }
+  // otherwise
+  // take first char from the string push it to array
+  // concat remainder
+  str = str.concat(remainingStr.charAt(0), remainingStr.slice(1));
+  // return createArray with array
+  return createArray(str);
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+  // if the array is empty return empty array
+  if (array.length === 0) {
+    return [];
+  }
+  // if the length is one
+  if (array.length === 1) {
+    return array;
+  }
+  // otherwise return last with the function concatenated
+  return array.slice(-1).concat(reverseArr(array.slice(0, -1)));
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+  // if length is zero return empty array
+  if (length === 0) {
+    return [];
+  }
+  // if length is one return [value]
+  if (length === 1) {
+    return [value];
+  }
+  // otherwise return value plus concat the function call
+  return [value].concat(buildList(value, length - 1));
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
